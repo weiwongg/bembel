@@ -13,10 +13,9 @@
 #define BEMBEL_VISUALIZE_MODULE_
 
 /**
- * \ingroup Modules
- * \defgroup IO IO
- * \brief The IO module provides input-output functionality, including
- * routines for VTK file export, timing, and writing log files.
+ *  \ingroup Modules
+ *  \defgroup IO IO
+ *  \brief The IO module provides input-output functionality.
  **/
 
 #include <assert.h>
@@ -36,7 +35,6 @@
 #include "src/IO/Stopwatch.hpp"
 #include "src/IO/VTKDomainExport.hpp"
 #include "src/IO/VTKSurfaceExport.hpp"
-#include "src/IO/VTKPointExport.hpp"
 #include "src/IO/print2file.hpp"
 
 #endif  // BEMBEL_VISUALIZE_MODULE_

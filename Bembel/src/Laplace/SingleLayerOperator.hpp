@@ -16,24 +16,20 @@ namespace Bembel {
 // forward declaration of class LaplaceSingleLayerOperator in order to define
 // traits
 class LaplaceSingleLayerOperator;
-/**
- * \brief Specification of the LinerOperatorTraits for Laplace.
- */
+
 template <>
 struct LinearOperatorTraits<LaplaceSingleLayerOperator> {
   typedef Eigen::VectorXd EigenType;
   typedef Eigen::VectorXd::Scalar Scalar;
   enum {
     OperatorOrder = -1,
-    Form = DifferentialForm::Discontinuous,
+    Form = DifferentialForm::Continuous,
     NumberOfFMMComponents = 1
   };
 };
 
 /**
  * \ingroup Laplace
- * \brief This class implements the specification of the integration for the
- * single layer operator for Laplace.
  */
 class LaplaceSingleLayerOperator
     : public LinearOperatorBase<LaplaceSingleLayerOperator> {

@@ -17,11 +17,6 @@ namespace Bembel {
 // traits
 class MassMatrixScalarCont;
 
-/**
- * \brief Specification of the LinerOperatorTraits for the MassMatrix.
- * 
- * With a continuous Basis. 
- */
 template <>
 struct LinearOperatorTraits<MassMatrixScalarCont> {
   typedef Eigen::VectorXd EigenType;

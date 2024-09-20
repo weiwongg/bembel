@@ -13,12 +13,9 @@
 
 namespace Bembel {
 /**
- * \ingroup LinearOperator
- * \brief linear operator base class. this serves as a common interface for
- * existing linear operators.
- *
- * Take a look at the [Design Considerations](\ref CRTPLinearOperator) for
- * details.
+ *    \ingroup LinearOperator
+ *    \brief linear operator base class. this serves as a common interface for
+ *           existing linear operators
  **/
 template <typename Derived>
 struct LinearOperatorBase {

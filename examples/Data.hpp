@@ -24,13 +24,6 @@ namespace Data {
 inline double HarmonicFunction(Eigen::Vector3d in) {
   return (4 * in(0) * in(0) - 3 * in(1) * in(1) - in(2) * in(2));
 }
-/*  @brief This function implements the gradient of a harmonic function,
- * which, in the interior dormain, satisfies the Laplace equation.
- *
- */
-inline Eigen::Vector3d HarmonicFunctionGrad(Eigen::Vector3d in) {
-  return Eigen::Vector3d(8 * in(0), -6 * in(1), -2 * in(2));
-}
 
 /*	@brief This function implements the Helmholtz fundamental solution,
  * which, if center is placed in the interior domain, satisfies the Helmholtz
@@ -42,27 +35,8 @@ inline Eigen::Vector3d HarmonicFunctionGrad(Eigen::Vector3d in) {
 inline std::complex<double> HelmholtzFundamentalSolution(
     Eigen::Vector3d pt, std::complex<double> kappa,
     Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0)) {
-  auto c = pt - center;
-  auto r = c.norm();
-  auto i = std::complex<double>(0., 1.);
-  return std::exp(-i * kappa * r) / r;
-}
-/*	@brief This function implements the gradient of the Helmholtz
- * fundamental solution, which, if center is placed in the interior domain,
- * satisfies the Helmholtz equation and radiation condition in the exterior
- * domain.
- *
- * Note that the sign in the fundamental solution is linked to the sign of kappa
- * in this function.
- */
-inline Eigen::Vector3cd HelmholtzFundamentalSolutionGrad(
-    Eigen::Vector3d pt, std::complex<double> kappa,
-    Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0)) {
-  auto c = pt - center;
-  auto r = c.norm();
-  auto r3 = r * r * r;
-  auto i = std::complex<double>(0., 1.);
-  return -c * std::exp(-i * kappa * r) * (1. + i * kappa * r) / r3;
+  return std::exp(-std::complex<double>(0, 1) * kappa * (pt - center).norm()) /
+         (pt - center).norm();
 }
 
 /* @brief This function implement a Hertz Dipole as in page 411 of J.D.Jacksons

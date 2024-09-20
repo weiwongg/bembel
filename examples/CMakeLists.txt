@@ -2,7 +2,6 @@
 # copy geometry files for testing
 configure_file(${CMAKE_SOURCE_DIR}/geo/sphere.dat ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
 configure_file(${CMAKE_SOURCE_DIR}/geo/torus.dat ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/geo/cube_small.dat ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
 
 ###############################################################################
 # examples being run from CI
@@ -16,17 +15,8 @@ set(CIFILES
     LaplaceBeltrami
     LaplaceSingleLayerFull
     LaplaceSingleLayerH2
-    LaplaceHypersingularH2
-    LaplaceDoubleLayerH2
-    LaplaceAdjointDoubleLayerH2
-    LazyEigenSum
     HelmholtzSingleLayerFull
     HelmholtzSingleLayerH2
-    HelmholtzDoubleLayerH2
-    HelmholtzAdjointDoubleLayerH2
-    HelmholtzHypersingularH2
-    HomogenisedLaplaceSingleLayerFull
-    HomogenisedLaplaceSingleLayerH2
     MaxwellSingleLayerFull
     MaxwellSingleLayerH2
     )
@@ -48,11 +38,11 @@ add_dependencies(E2Etests ${CIFILES})
 ###############################################################################
 
 set(NOCIFILES
+    DeformGeometry
     Quadrature
     VTKSurfaceExport
     VTKDomainExport
     FullLaplaceWorkflow
-    FullMaxwellWorkflow
     )
 
   foreach(file IN LISTS NOCIFILES)

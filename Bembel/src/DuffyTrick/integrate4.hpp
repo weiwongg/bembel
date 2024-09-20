@@ -14,21 +14,21 @@
 namespace Bembel {
 namespace DuffyTrick {
 /**
- * \ingroup DuffyTrick
- * \brief quadrature routine for common vertex case.
- * \todo  be sure that map2element computes the weight h*Q.w(i) such that the
- *integrand may then be scaled by qp1.weight * qp2.weight here we just set one
- *weight to the actual weight, while the other one will be set to 1. This is to
- *remain conforming to the structure of integrate0/1.
- * 
- * Information that map2element has to provide:
- * xi; w; Chi(xi); dChidx(xi); dChidy(xi);
+ *  \ingroup DuffyTrick
+ *    \brief quadrature routine for identical elements
+ *    \todo  be sure that map2element computes the weight h*Q.w(i) such that
+ *           the integrand may then be scaled by qp1.weight * qp2.weight
+ *           here we just set one weight to the actual weight, while the
+ *other one will be set to 1. This is to remain conforming to the structure
+ *           of integrate0/1
+ *           Information that map2element has to provide:
+ *           xi; w; Chi(xi); dChidx(xi); dChidy(xi);
  **/
 template <typename Derived, class T>
 void integrate4(const LinearOperatorBase<Derived> &LinOp, const T &super_space,
                 const ElementTreeNode &e1, int rot1, const ElementTreeNode &e2,
-                int rot2, const ElementSurfacePoints &ffield_qnodes1,
-                const ElementSurfacePoints &ffield_qnodes2, const Cubature &Q,
+                int rot2, const Eigen::MatrixXd &ffield_qnodes1,
+                const Eigen::MatrixXd &ffield_qnodes2, const Cubature &Q,
                 Eigen::Matrix<typename LinearOperatorTraits<Derived>::Scalar,
                               Eigen::Dynamic, Eigen::Dynamic> *intval) {
   intval->setZero();

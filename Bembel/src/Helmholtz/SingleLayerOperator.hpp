@@ -16,9 +16,7 @@ namespace Bembel {
 // forward declaration of class HelmholtzSingleLayerOperator in order to define
 // traits
 class HelmholtzSingleLayerOperator;
-/**
- * \brief Specification of the LinerOperatorTraits for Helmholtz.
- */
+
 template <>
 struct LinearOperatorTraits<HelmholtzSingleLayerOperator> {
   typedef Eigen::VectorXcd EigenType;
@@ -32,8 +30,6 @@ struct LinearOperatorTraits<HelmholtzSingleLayerOperator> {
 
 /**
  * \ingroup Helmholtz
- * \brief This class implements the specification of the integration for the
- * single layer potential for Helmholtz.
  */
 class HelmholtzSingleLayerOperator
     : public LinearOperatorBase<HelmholtzSingleLayerOperator> {

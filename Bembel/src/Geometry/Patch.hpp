@@ -13,53 +13,34 @@
 namespace Bembel {
 
 /**
- * \ingroup Geometry
- * \class Patch
- * \brief handles a single patch
- */
+ *  \ingroup Geometry
+ *  \class Patch
+ *  \brief handles a single patch
+ **/
 class Patch {
  public:
   //////////////////////////////////////////////////////////////////////////////
   /// constructors
   //////////////////////////////////////////////////////////////////////////////
-  /**
-   * \brief Default constructor.
-   */
   Patch() {}
-  /**
-   * \brief Constructor of a Patch.
-   *
-   * A patch is defined by a set of control points and knot vectors in the x and
-   * y directions. It is used to create complex surfaces in computer graphics
-   * and CAD applications.
-   *
-   * \param control_points std::vector<Eigen::MatrixXd> {x, y, z, w} where the
-   * rows are the control points in x direction.
-   * \param knots_x The knot vector
-   * in the x direction.
-   * \param knots_y The knot vector in the y direction.
-   */
   Patch(const std::vector<Eigen::Matrix<double, -1, -1>> &control_points,
         const std::vector<double> &knots_x,
         const std::vector<double> &knots_y) {
     init_Patch(control_points, knots_x, knots_y);
   }
+  Patch(const std::vector<double> &data, const int polynomial_degree_x,
+        const int polynomial_degree_y,
+        const std::vector<double> &unique_knots_x,
+        const std::vector<double> &unique_knots_y)
+      : data_(data),
+        polynomial_degree_x_(polynomial_degree_x),
+        polynomial_degree_y_(polynomial_degree_y),
+        unique_knots_x_(unique_knots_x),
+        unique_knots_y_(unique_knots_y) {}
+
   //////////////////////////////////////////////////////////////////////////////
   /// init
   //////////////////////////////////////////////////////////////////////////////
-  /**
-   * \brief Initializes a Patch.
-   *
-   * A patch is defined by a set of control points and knot vectors in the x and
-   * y directions. It is used to create complex surfaces in computer graphics
-   * and CAD applications.
-   *
-   * \param xyzw std::vector<Eigen::MatrixXd> {x, y, z, w} where the
-   * rows are the control points in x direction.
-   * \param x_knots The knot vector
-   * in the x direction.
-   * \param y_knots The knot vector in the y direction.
-   */
   inline void init_Patch(const std::vector<Eigen::Matrix<double, -1, -1>> &xyzw,
                          const std::vector<double> &x_knots,
                          const std::vector<double> &y_knots) {
@@ -102,16 +83,10 @@ class Patch {
 
     return;
   }
-  /**
-   * \brief Evaluate patch at given point.
-   *
-   * I look up the position in the knot vector, scale the input arguments,
-   * evaluate the 1D basis functions and sum over them with the control points
-   * from data.
-   *
-   * \param reference_point Point in reference domain.
-   * \return Point in physical domain.
-   */
+  /* eval() evaluates the geometry. I look up the position in the knot vector,
+   * scale the input arguments, evaluate the 1D basis functions and sum over
+   * them with the controll points from data. */
+
   Eigen::Vector3d eval(const Eigen::Vector2d &reference_point) const {
     const int x_location =
         Spl::FindLocationInKnotVector(reference_point(0), unique_knots_x_);
@@ -154,12 +129,6 @@ class Patch {
     return out / tmp[3];
   }
 
-  /**
-   * \brief Evaluate Jacobian of the parametrization at given point.
-   *
-   * \param reference_point Point in reference domain.
-   * \return 3x2 Matrix with the Jacobian.
-   */
   Eigen::Matrix<double, 3, 2> evalJacobian(
       const Eigen::Vector2d &reference_point) const {
     const int x_location =
@@ -231,67 +200,26 @@ class Patch {
     return out;
   }
 
-  /**
-   * \brief Evaluate normal vector at given point.
-   *
-   * \param reference_point Point in reference domain.
-   * \return 3x1 normal vector.
-   */
   inline Eigen::Matrix<double, 3, 1> evalNormal(
       const Eigen::Vector2d &reference_point) const {
     Eigen::Matrix<double, 3, 2> jac = evalJacobian(reference_point);
     return jac.col(0).cross(jac.col(1));
   }
 
-  /**
-   * \brief Evaluate patch at given point.
-   *
-   * I look up the position in the knot vector, scale the input arguments,
-   * evaluate the 1D basis functions and sum over them with the control points
-   * from data.
-   *
-   * \param x Coordinate in reference domain.
-   * \param y Coordinate in reference domain.
-   * \return Point in physical domain.
-   */
+  // Wrapper for legacy code
   inline Eigen::Vector3d eval(double x, double y) const {
     return eval(Eigen::Vector2d(x, y));
   }
-  /**
-   * \brief Evaluate Jacobian of the parametrization at given point.
-   *
-   * \param x Coordinate in reference domain.
-   * \param y Coordinate in reference domain.
-   * \return 3x2 Matrix with the Jacobian.
-   */
   inline Eigen::Matrix<double, 3, 2> evalJacobian(double x, double y) const {
     return evalJacobian(Eigen::Vector2d(x, y));
   }
-  /**
-   * \brief Evaluate normal vector at given point.
-   *
-   * \param x Coordinate in reference domain.
-   * \param y Coordinate in reference domain.
-   * \return 3x1 normal vector.
-   */
   inline Eigen::Matrix<double, 3, 1> evalNormal(double x, double y) const {
     return evalNormal(Eigen::Vector2d(x, y));
   }
 
-  //
-  /**
-   * \brief Updates the surface point and returns the physical point and the
-   * derivatives there.
-   *
-   * This is a combination of eval und evalJacobian, to avoid duplication of
-   * work.
-   *
-   * \param srf_pt Pointer to the SurfacePoint which gets updated.
-   * \param ref_pt Point in reference domain with respect to the patch.
-   * \param w quadrature weight.
-   * \param xi Point in reference domain with respect to the element.
-   */
-  void updateSurfacePoint(SurfacePoint *srf_pt,
+  // This is a combination of eval und evalJacobian, to avoid duplication of
+  // work. See SurfacePoint.hpp
+  void updateSurfacePoint(Eigen::Matrix<double, 12, 1> *srf_pt,
                           const Eigen::Vector2d &ref_pt, double w,
                           const Eigen::Vector2d &xi) const {
     const int x_location =
@@ -377,12 +305,6 @@ class Patch {
       unique_knots_y_;  // The knot vectors, where each knot is unique
 };
 
-/**
- * \brief This function cuts a patch along internal knots, if any.
- *
- * \param patch Patch which gets checked and cut if there are internal knots.
- * \return Vector of patches if it got cut, otherwise the vector is of size 1.
- */
 inline std::vector<Patch> PatchShredder(const Patch &patch) noexcept {
   // Already a Bezier patch
   if (patch.unique_knots_y_.size() == 2 && patch.unique_knots_x_.size() == 2) {
@@ -428,12 +350,7 @@ inline std::vector<Patch> PatchShredder(const Patch &patch) noexcept {
   return out;
 }
 
-/**
- * \brief This function cuts all patches along internal knots, if any.
- *
- * \param patches Vector with patches.
- * \return Vector of patches if it got cut.
- */
+// Shredds a whole vector of Patches
 inline std::vector<Patch> PatchShredder(
     const std::vector<Patch> &patches) noexcept {
   std::vector<Patch> out;
