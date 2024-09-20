@@ -1,24 +1,22 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_SRC_LINEARFORM_DIRICHLETTRACE_HPP_
-#define BEMBEL_SRC_LINEARFORM_DIRICHLETTRACE_HPP_
+#ifndef BEMBEL_LINEARFORM_DIRICHLETTRACE_H_
+#define BEMBEL_LINEARFORM_DIRICHLETTRACE_H_
 
 namespace Bembel {
 
-template <typename Scalar>
+template <typename Scalar, typename Function>
 class DirichletTrace;
 
-template <typename ScalarT>
-struct LinearFormTraits<DirichletTrace<ScalarT>> {
+template <typename ScalarT, typename FunctionT>
+struct LinearFormTraits<DirichletTrace<ScalarT, FunctionT>> {
   typedef ScalarT Scalar;
+  typedef FunctionT Function;
 };
 
 /**
@@ -27,13 +25,15 @@ struct LinearFormTraits<DirichletTrace<ScalarT>> {
  * and a corresponding method to evaluate the linear form corresponding to the
  * right hand side of the system via quadrature.
  */
-template <typename Scalar>
-class DirichletTrace : public LinearFormBase<DirichletTrace<Scalar>, Scalar> {
+
+template <typename Scalar,
+          typename Function = std::function<Scalar(Eigen::Vector3d)>>
+class DirichletTrace
+    : public LinearFormBase<DirichletTrace<Scalar, Function>, Scalar> {
  public:
   DirichletTrace() {}
-  void set_function(const std::function<Scalar(Eigen::Vector3d)> &function) {
-    function_ = function;
-  }
+  void set_function(const Function &function) { function_ = function; }
+
   template <class T>
   void evaluateIntegrand_impl(
       const T &super_space, const SurfacePoint &p,
@@ -56,18 +56,19 @@ class DirichletTrace : public LinearFormBase<DirichletTrace<Scalar>, Scalar> {
     // compute surface measures from tangential derivatives
     auto x_kappa = x_f_dx.cross(x_f_dy).norm();
 
-    // integrand without basis functions
-    auto integrand = function_(x_f) * x_kappa * ws;
+    auto integrand =
+        FunctionEvaluationHelper<Scalar, Function>::evaluate(p, function_) *
+        x_kappa * ws;
 
     // multiply basis functions with integrand
     super_space.addScaledBasis(intval, integrand, s);
 
     return;
-  }
+  };
 
  private:
-  std::function<Scalar(Eigen::Vector3d)> function_;
+  Function function_;
 };
 }  // namespace Bembel
 
-#endif  // BEMBEL_SRC_LINEARFORM_DIRICHLETTRACE_HPP_
+#endif

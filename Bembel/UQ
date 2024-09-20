@@ -1,0 +1,32 @@
+// This file is part of Bembel, the higher order C++ boundary element library.
+// It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
+// M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
+// Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
+// source code is subject to the GNU General Public License version 3 and
+// provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
+// information.
+
+#ifndef BEMBEL_UNCERTAINTYQUANTIFICATION_MODULE_
+#define BEMBEL_UNCERTAINTYQUANTIFICATION_MODULE_
+
+#define _USE_MATH_DEFINES
+
+#include <functional>
+#include <vector>
+#include <cmath>
+
+#include <Eigen/Dense>
+#include <Eigen/Eigenvalues>
+#include <Eigen/QR>
+#include <Eigen/SVD>
+
+#include "Geometry"
+#include "IO"
+
+#include "src/util/GenericMatrix.hpp" 
+#include "src/UQ/KernelMatrix.hpp"
+#include "src/UQ/PivotedCholesky.hpp"
+#include "src/UQ/GeometryDeformer.hpp"
+#include "src/UQ/OnlineCor.hpp"
+
+#endif

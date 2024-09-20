@@ -1,15 +1,13 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2024 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_SRC_LAPLACE_HYPERSINGULAROPERATOR_HPP_
-#define BEMBEL_SRC_LAPLACE_HYPERSINGULAROPERATOR_HPP_
+//
+#ifndef BEMBEL_LINEAROPERATOR_LAPLACE_LAPLACEHYPERSINGULAROPERATOR_H_
+#define BEMBEL_LINEAROPERATOR_LAPLACE_LAPLACEHYPERSINGULAROPERATOR_H_
 
 namespace Bembel {
 // forward declaration of class LaplaceHypersingularOperator in order to define
@@ -138,8 +136,7 @@ struct H2Multipole::Moment2D<InterpolationPoints,
         Moment1DDerivative<InterpolationPoints, LaplaceHypersingularOperator>>(
         super_space, cluster_level, cluster_refinements, number_of_points);
 
-    Eigen::MatrixXd moment(moment_dx.rows() + moment_dy.rows(),
-                           moment_dx.cols());
+    Eigen::MatrixXd moment(moment_dx.rows() + moment_dy.rows(), moment_dx.cols());
     moment << moment_dx, moment_dy;
 
     std::vector<Eigen::MatrixXd> vector_of_moments;
@@ -150,4 +147,4 @@ struct H2Multipole::Moment2D<InterpolationPoints,
 };
 
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_LAPLACE_HYPERSINGULAROPERATOR_HPP_
+#endif

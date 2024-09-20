@@ -1,7 +1,4 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2024 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
@@ -9,22 +6,33 @@
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
 
-#ifndef BEMBEL_SRC_GEOMETRY_GEOMETRYIO_HPP_
-#define BEMBEL_SRC_GEOMETRY_GEOMETRYIO_HPP_
+#ifndef BEMBEL_GEOMETRY_GEOMETRYIO_H_
+#define BEMBEL_GEOMETRY_GEOMETRYIO_H_
 
 namespace Bembel {
+/**
+ * \ingroup Geometry
+ * \brief template for loading geometry files
+ * \param name path/filename pointing to the geometry file
+ * \return std::vector of T, i.e. a PatchVector describing geometry
+ */
+template <typename PatchType>
+inline std::vector<PatchType> LoadGeometryFile(
+    const std::string &file_name) noexcept {
+  return PatchType();
+}
 
 /**
  * \ingroup Geometry
  * \brief loads geometry from file with GEOPDE-format. Note that the direction
  *        of the normals must be consistent
- *
- * \param file_name path/filename pointing to the geometry file
+ * \param name path/filename pointing to the geometry file
  * \return std::vector of NURBS::Patch describing geometry
  */
-inline std::vector<Patch> LoadGeometryFileDAT(
+template <>
+inline std::vector<NURBSPatch> LoadGeometryFile<NURBSPatch>(
     const std::string &file_name) noexcept {
-  std::vector<Bembel::Patch> out;
+  std::vector<NURBSPatch> out;
   std::stringstream iss;
   std::string word;
   std::string row;
@@ -48,7 +56,7 @@ inline std::vector<Patch> LoadGeometryFileDAT(
   }
   // main loop - patches
   for (int patchNr = 1; patchNr <= infoInt[2]; patchNr++) {
-    Bembel::Patch tempPatch;
+    NURBSPatch tempPatch;
     std::vector<double> tempknt1;
     std::vector<double> tempknt2;
     std::vector<int> info;  // p and ncp / 0,1-p  2,3-ncp
@@ -113,7 +121,7 @@ inline std::vector<Patch> LoadGeometryFileDAT(
       iss.clear();
     }
     // Important
-    tempPatch.init_Patch(tmp, tempknt1, tempknt2);
+    tempPatch.init_NURBSPatch(tmp, tempknt1, tempknt2);
     out.push_back(tempPatch);
   }
 
@@ -124,8 +132,8 @@ inline std::vector<Patch> LoadGeometryFileDAT(
 /**
  * \ingroup Gemetry
  * \brief method to generate textfile for the geometry
- * \param file_name name of new textfile
- * \param number_of_patches overall number of patches
+ * \param name name of new textfile
+ * \param patchnumber overall number of patches
  **/
 inline void MakeFile(const std::string &file_name,
                      int number_of_patches) noexcept {
@@ -144,12 +152,12 @@ inline void MakeFile(const std::string &file_name,
 }
 /**
  * \ingroup Gemetry
- * \brief method to write Patch information into textfile
+ * \brief method to write NURBSPatch information into textfile
  * \param knt1 knotVector1
  * \param knt2 knotVector2
- * \param xyzw Vector with x,y,z,w Matices
- * \param file_name filename
- * \param current_patch_number current patch number
+ * \param tmp Vector with x,y,z,w Matices
+ * \param name filename
+ * \param patchnumberCurr current patch number
  **/
 void WritePatch(const std::string &file_name, int current_patch_number,
                 const std::vector<Eigen::MatrixXd> &xyzw,
@@ -191,58 +199,38 @@ void WritePatch(const std::string &file_name, int current_patch_number,
   file.close();
 }
 
-/**
- * \ingroup Geometry
- * \brief exports a geometry from Bembel to a .dat file.
- *
- * Limitation: This functions assumes a p-open knot vector without internal
- * knots.
- *
- * \param Geometry std::vector of NURBS::Patch describing geometry
- * \param file_name path/filename to be written to
- */
-void WriteDATFile(const std::vector<Patch> &Geometry,
-                  const std::string &file_name) {
-  const int number_of_patches = Geometry.size();
-  MakeFile(file_name, number_of_patches);
+namespace IO {
 
-  int patch_count = 0;
-  for (auto &patch : Geometry) {
-    assert(patch.unique_knots_x_.size() == 2 &&
-           "I assume 0 and 1 as unique knots!");
-    assert(patch.unique_knots_y_.size() == 2 &&
-           "I assume 0 and 1 as unique knots!");
-
-    const int polynomial_degree_x = patch.polynomial_degree_x_;
-    const int polynomial_degree_y = patch.polynomial_degree_y_;
-
-    std::vector<double> knt_x(2 * polynomial_degree_x, 1.0);
-    std::vector<double> knt_y(2 * polynomial_degree_y, 1.0);
-    for (auto i = 0; i < polynomial_degree_x; ++i) knt_x[i] = 0.0;
-    for (auto i = 0; i < polynomial_degree_y; ++i) knt_y[i] = 0.0;
-
-    const int number_of_points_x = knt_x.size() - polynomial_degree_x;
-    const int number_of_points_y = knt_y.size() - polynomial_degree_y;
-
-    std::vector<Eigen::MatrixXd> data(
-        4, Eigen::MatrixXd::Zero(number_of_points_y, number_of_points_x));
-
-    const int matrix_size = number_of_points_x * number_of_points_y;
-    for (auto i = 0; i < matrix_size; ++i) {
-      const int rowIndex = i % number_of_points_y;
-      const int colIndex = i / number_of_points_y;
-      data[0](rowIndex, colIndex) = patch.data_[4 * i];
-      data[1](rowIndex, colIndex) = patch.data_[4 * i + 1];
-      data[2](rowIndex, colIndex) = patch.data_[4 * i + 2];
-      data[3](rowIndex, colIndex) = patch.data_[4 * i + 3];
+void readPointsAscii(std::vector<Eigen::MatrixXd> *P, int *p, int *m,
+                     const std::string &fname) {
+  int n = 0;  /// n*n panels per patch on level m
+  std::FILE *file = std::fopen(fname.c_str(), "r");
+  assert(file != nullptr && "readPointsAscii: could not read data file");
+  /// read number of levels and number of patches
+  fscanf(file, "%d\n%d\n", m, p);
+  P->resize(*p);
+  n = 1 << (*m);
+  std::cout << "#patches= " << *p << " #levels= " << *m << std::endl;
+  for (auto it = P->begin(); it != P->end(); ++it)
+    it->resize(3, (n + 1) * (n + 1));
+  /// read points patchwise in rowwise, lexicographical order
+  for (auto i = 0; i < *p; ++i) {
+    int ptch, s, t;
+    double x, y, z;
+    for (auto k = 0; k < (n + 1) * (n + 1); ++k) {
+      fscanf(file, "%d %d %d %lg %lg %lg\n", &ptch, &t, &s, &x, &y, &z);
+      assert(ptch == i && "readPointsAscii: wrong file format");
+      assert(s == k % (n + 1) && "readPointsAscii: wrong file format");
+      assert(t == k / (n + 1) && "readPointsAscii: wrong file format");
+      // we have that k = s * (n + 1) + t % (n+1)
+      // corresponding to the kartesian coordinates (s,t) in [0,n]^2
+      (*P)[i].col(k) << x, y, z;
     }
-
-    WritePatch(file_name, patch_count, data, knt_x, knt_y);
-    ++patch_count;
   }
-
+  fclose(file);
   return;
 }
+}  // namespace IO
 
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_GEOMETRY_GEOMETRYIO_HPP_
+#endif

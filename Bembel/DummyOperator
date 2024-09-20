@@ -1,7 +1,4 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
@@ -12,12 +9,6 @@
 #ifndef BEMBEL_DUMMYOPERATOR_MODULE_
 #define BEMBEL_DUMMYOPERATOR_MODULE_
 
-/**
- * \ingroup Modules
- * \defgroup DummyOperator DummyOperator
- * \brief DummyOperator provides a LinearOperator for testing.
- **/
-
 #include <functional>
 
 #include <Eigen/Dense>
@@ -26,4 +17,4 @@
 
 #include "src/LinearOperator/Dummy/DummyOperator.hpp"
 
-#endif  // BEMBEL_DUMMYOPERATOR_MODULE_
+#endif

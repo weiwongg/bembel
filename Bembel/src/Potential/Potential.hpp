@@ -1,15 +1,12 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_SRC_POTENTIAL_POTENTIAL_HPP_
-#define BEMBEL_SRC_POTENTIAL_POTENTIAL_HPP_
+#ifndef BEMBEL_POTENTIAL_POTENTIAL_H_
+#define BEMBEL_POTENTIAL_POTENTIAL_H_
 
 #include <Eigen/Dense>
 
@@ -23,64 +20,41 @@ namespace Bembel {
  *    \brief struct containing specifications on the functional
  *           has to be specialized or derived for any particular operator
  *           under consideration
- */
+ **/
 template <typename Derived>
 struct PotentialTraits {
   enum { YOU_DID_NOT_SPECIFY_POTENTIAL_TRAITS = 1 };
 };
 
-/**
- * \brief Base case for specifying the return type of the potential.
- */
 template <typename S, typename T>
 struct PotentialReturnScalar {
   enum { RETURN_TYPE_ONLY_SPECIFIED_FOR_DOUBLE_OR_COMPLEX_DOUBLE = 1 };
 };
-/**
- * \brief Potential return type if the scalar type in both the
- * LinearOperatorTraits and the PotentialTraits is a double.
- */
 template <>
 struct PotentialReturnScalar<double, double> {
   typedef double Scalar;
 };
-/**
- * \brief Potential return type if the scalar type in the LinearOperatorTraits
- * is complex and in the PotentialTraits is a double.
- */
 template <>
 struct PotentialReturnScalar<std::complex<double>, double> {
   typedef std::complex<double> Scalar;
 };
-/**
- * \brief Potential return type if the scalar type in the LinearOperatorTraits
- * is double and the PotentialTraits is a complex.
- */
 template <>
 struct PotentialReturnScalar<double, std::complex<double>> {
   typedef std::complex<double> Scalar;
 };
-/**
- * \brief Potential return type if the scalar type in both LinearOperatorTraits
- * and the PotentialTraits is a complex.
- */
 template <>
 struct PotentialReturnScalar<std::complex<double>, std::complex<double>> {
   typedef std::complex<double> Scalar;
 };
 
 /**
- * \ingroup Potential
- * \brief functional base class. this serves as a common interface for
- * existing functionals.
- * 
- * Take a look at the [Design Considerations](\ref CRTPPotential) for
- * details.
+ *    \brief functional base class. this serves as a common interface for
+ *           existing functionals
  **/
 template <typename Derived, typename LinOp>
 struct PotentialBase {
   // Constructors
-  PotentialBase() {}
+  PotentialBase(){};
 
   // the user has to provide the implementation of this function, which
   // tells
@@ -109,4 +83,4 @@ struct PotentialBase {
   const Derived &derived() const { return *static_cast<const Derived *>(this); }
 };
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_POTENTIAL_POTENTIAL_HPP_
+#endif

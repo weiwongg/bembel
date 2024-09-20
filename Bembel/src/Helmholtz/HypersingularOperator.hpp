@@ -1,7 +1,4 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2024 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
@@ -9,8 +6,8 @@
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
 //
-#ifndef BEMBEL_SRC_HELMHOLTZ_HYPERSINGULAROPERATOR_HPP_
-#define BEMBEL_SRC_HELMHOLTZ_HYPERSINGULAROPERATOR_HPP_
+#ifndef BEMBEL_LINEAROPERATOR_HELMHOLTZ_HELMHOLTZHYPERSINGULAROPERATOR_H_
+#define BEMBEL_LINEAROPERATOR_HELMHOLTZ_HELMHOLTZHYPERSINGULAROPERATOR_H_
 
 namespace Bembel {
 // forward declaration of class HelmholtzHypersingularOperator in order to
@@ -38,45 +35,44 @@ class HelmholtzHypersingularOperator
  public:
   HelmholtzHypersingularOperator() {}
   template <class T>
-  void evaluateIntegrand_impl(const T &super_space, const SurfacePoint &p1,
-                              const SurfacePoint &p2,
-                              Eigen::MatrixXcd *intval) const {
+  void evaluateIntegrand_impl(
+      const T &super_space, const SurfacePoint &p1, const SurfacePoint &p2,
+      Eigen::Matrix<
+          typename LinearOperatorTraits<HelmholtzHypersingularOperator>::Scalar,
+          Eigen::Dynamic, Eigen::Dynamic> *intval) const {
     auto polynomial_degree = super_space.get_polynomial_degree();
     auto polynomial_degree_plus_one_squared =
         (polynomial_degree + 1) * (polynomial_degree + 1);
 
     // get evaluation points on unit square
-    Eigen::Vector2d s = p1.segment<2>(0);
-    Eigen::Vector2d t = p2.segment<2>(0);
+    auto s = p1.segment<2>(0);
+    auto t = p2.segment<2>(0);
 
     // get quadrature weights
-    double ws = p1(2);
-    double wt = p2(2);
+    auto ws = p1(2);
+    auto wt = p2(2);
 
     // get points on geometry and tangential derivatives
-    Eigen::Vector3d x_f = p1.segment<3>(3);
-    Eigen::Vector3d x_f_dx = p1.segment<3>(6);
-    Eigen::Vector3d x_f_dy = p1.segment<3>(9);
-    Eigen::Vector3d y_f = p2.segment<3>(3);
-    Eigen::Vector3d y_f_dx = p2.segment<3>(6);
-    Eigen::Vector3d y_f_dy = p2.segment<3>(9);
+    auto x_f = p1.segment<3>(3);
+    auto x_f_dx = p1.segment<3>(6);
+    auto x_f_dy = p1.segment<3>(9);
+    auto y_f = p2.segment<3>(3);
+    auto y_f_dx = p2.segment<3>(6);
+    auto y_f_dy = p2.segment<3>(9);
 
     // compute surface measures from tangential derivatives
-    Eigen::Vector3d x_n = x_f_dx.cross(x_f_dy);
-    Eigen::Vector3d y_n = y_f_dx.cross(y_f_dy);
+    auto x_n = x_f_dx.cross(x_f_dy);
+    auto y_n = y_f_dx.cross(y_f_dy);
 
     // compute h
-    double h =
-        1. / (1 << super_space.get_refinement_level());  // h = 1 ./ (2^M)
+    auto h = 1. / (1 << super_space.get_refinement_level());  // h = 1 ./ (2^M)
 
     // evaluate kernel
-    std::complex<double> kernel = evaluateKernel(x_f, y_f);
+    auto kernel = evaluateKernel(x_f, y_f);
 
     // integrand without basis functions
-    std::complex<double> integrandScalar =
-        -kernel * x_n.dot(y_n) * wavenumber2_ * ws * wt;
-    std::complex<double> integrandCurl =
-        kernel * x_n.norm() * y_n.norm() * ws * wt / h / h;
+    auto integrandScalar = -kernel * x_n.dot(y_n) * wavenumber2_ * ws * wt;
+    auto integrandCurl = kernel * x_n.norm() * y_n.norm() * ws * wt / h / h;
 
     // multiply basis functions with integrand and add to intval, this is an
     // efficient implementation of
@@ -89,23 +85,23 @@ class HelmholtzHypersingularOperator
   Eigen::Matrix<std::complex<double>, 3, 3> evaluateFMMInterpolation_impl(
       const SurfacePoint &p1, const SurfacePoint &p2) const {
     // get evaluation points on unit square
-    Eigen::Vector2d s = p1.segment<2>(0);
-    Eigen::Vector2d t = p2.segment<2>(0);
+    auto s = p1.segment<2>(0);
+    auto t = p2.segment<2>(0);
 
     // get points on geometry and tangential derivatives
-    Eigen::Vector3d x_f = p1.segment<3>(3);
-    Eigen::Vector3d x_f_dx = p1.segment<3>(6);
-    Eigen::Vector3d x_f_dy = p1.segment<3>(9);
-    Eigen::Vector3d y_f = p2.segment<3>(3);
-    Eigen::Vector3d y_f_dx = p2.segment<3>(6);
-    Eigen::Vector3d y_f_dy = p2.segment<3>(9);
+    auto x_f = p1.segment<3>(3);
+    auto x_f_dx = p1.segment<3>(6);
+    auto x_f_dy = p1.segment<3>(9);
+    auto y_f = p2.segment<3>(3);
+    auto y_f_dx = p2.segment<3>(6);
+    auto y_f_dy = p2.segment<3>(9);
 
     // compute surface measures from tangential derivatives
-    Eigen::Vector3d x_n = x_f_dx.cross(x_f_dy);
-    Eigen::Vector3d y_n = y_f_dx.cross(y_f_dy);
+    auto x_n = x_f_dx.cross(x_f_dy);
+    auto y_n = y_f_dx.cross(y_f_dy);
 
     // evaluate kernel
-    std::complex<double> kernel = evaluateKernel(x_f, y_f);
+    auto kernel = evaluateKernel(x_f, y_f);
 
     // interpolation
     Eigen::Matrix<std::complex<double>, 3, 3> intval;
@@ -183,4 +179,4 @@ struct H2Multipole::Moment2D<InterpolationPoints,
 };
 
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_HELMHOLTZ_HYPERSINGULAROPERATOR_HPP_
+#endif

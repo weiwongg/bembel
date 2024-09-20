@@ -1,7 +1,4 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
@@ -11,13 +8,6 @@
 
 #ifndef BEMBEL_VISUALIZE_MODULE_
 #define BEMBEL_VISUALIZE_MODULE_
-
-/**
- * \ingroup Modules
- * \defgroup IO IO
- * \brief The IO module provides input-output functionality, including
- * routines for VTK file export, timing, and writing log files.
- **/
 
 #include <assert.h>
 
@@ -30,13 +20,15 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <stdexcept>
+
 
 #include "AnsatzSpace"
 #include "src/IO/Logger.hpp"
 #include "src/IO/Stopwatch.hpp"
 #include "src/IO/VTKDomainExport.hpp"
 #include "src/IO/VTKSurfaceExport.hpp"
-#include "src/IO/VTKPointExport.hpp"
 #include "src/IO/print2file.hpp"
+#include "src/IO/progbar.hpp"
 
-#endif  // BEMBEL_VISUALIZE_MODULE_
+#endif

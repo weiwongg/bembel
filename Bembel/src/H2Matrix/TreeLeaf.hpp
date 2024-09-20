@@ -1,7 +1,4 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
@@ -9,13 +6,10 @@
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
 //
-#ifndef BEMBEL_SRC_H2MATRIX_TREELEAF_HPP_
-#define BEMBEL_SRC_H2MATRIX_TREELEAF_HPP_
+#ifndef BEMBEL_H2MATRIX_TREELEAF_H_
+#define BEMBEL_H2MATRIX_TREELEAF_H_
 
 namespace Bembel {
-/**
- * \brief This class is managing the leafs of the H2Matrix BlockClusterTree.
- */
 template <typename Derived>
 class TreeLeaf {
  public:
@@ -59,7 +53,7 @@ class TreeLeaf {
    *        whatever Eigen object is put in here will be evaluated
    **/
   template <typename otherDerived>
-  explicit TreeLeaf(const Eigen::MatrixBase<otherDerived> &F)
+  TreeLeaf(const Eigen::MatrixBase<otherDerived> &F)
       : F_(F), L_(Derived(0, 0)), R_(Derived(0, 0)), is_low_rank_(false) {}
   /**
    * \brief lowRank move constructor
@@ -69,7 +63,7 @@ class TreeLeaf {
   /**
    * \brief full move constructor
    **/
-  explicit TreeLeaf(Derived &&F)
+  TreeLeaf(Derived &&F)
       : F_(F), L_(Derived(0, 0)), R_(Derived(0, 0)), is_low_rank_(false) {}
   //////////////////////////////////////////////////////////////////////////////
   //    getter
@@ -143,4 +137,4 @@ class TreeLeaf {
   bool is_low_rank_;
 };
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_H2MATRIX_TREELEAF_HPP_
+#endif

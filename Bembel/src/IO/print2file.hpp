@@ -1,15 +1,12 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_SRC_IO_PRINT2FILE_HPP_
-#define BEMBEL_SRC_IO_PRINT2FILE_HPP_
+#ifndef BEMBEL_IO_PRINT2DAT_H_
+#define BEMBEL_IO_PRINT2DAT_H_
 
 namespace Bembel {
 namespace IO {
@@ -34,6 +31,27 @@ int print2ascii(const std::string &fileName,
   }
   myfile.close();
 
+  return 0;
+}
+
+template <typename Scalar>
+int print2spascii(const std::string &fileName,
+                  const Eigen::SparseMatrix<Scalar> &var,
+                  const std::string &writeMode) {
+  std::ofstream myfile;
+  if (writeMode == "w")
+    myfile.open(fileName);
+  else if (writeMode == "a")
+    myfile.open(fileName, std::ios_base::app);
+  else
+    return 1;
+  for (auto i = 0; i < var.outerSize(); i++)
+    for (typename Eigen::SparseMatrix<Scalar>::InnerIterator it(var, i); it;
+         ++it) {
+      myfile << it.row() + 1 << " " << it.col() + 1 << " "
+             << std::setprecision(30) << it.value() << std::endl;
+    }
+  myfile.close();
   return 0;
 }
 
@@ -204,4 +222,4 @@ int bin2Mat(const std::string &fileName,
 }  // namespace IO
 }  // namespace Bembel
 
-#endif  // BEMBEL_SRC_IO_PRINT2FILE_HPP_
+#endif

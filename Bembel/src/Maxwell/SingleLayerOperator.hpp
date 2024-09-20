@@ -1,7 +1,4 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
@@ -9,16 +6,14 @@
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
 //
-#ifndef BEMBEL_SRC_MAXWELL_SINGLELAYEROPERATOR_HPP_
-#define BEMBEL_SRC_MAXWELL_SINGLELAYEROPERATOR_HPP_
+#ifndef BEMBEL_LINEAROPERATOR_MAXWELL_MAXWELLSINGLELAYEROPERATOR_H_
+#define BEMBEL_LINEAROPERATOR_MAXWELL_MAXWELLSINGLELAYEROPERATOR_H_
 
 namespace Bembel {
 // forward declaration of class MaxwellSingleLayerOperator in order to define
 // traits
 class MaxwellSingleLayerOperator;
-/**
- * \brief Specification of the LinerOperatorTraits for Maxwell.
- */
+
 template <>
 struct LinearOperatorTraits<MaxwellSingleLayerOperator> {
   typedef Eigen::VectorXcd EigenType;
@@ -32,8 +27,6 @@ struct LinearOperatorTraits<MaxwellSingleLayerOperator> {
 
 /**
  * \ingroup Maxwell
- * \brief This class implements the specification of the integration for the
- * Electric Field Integral Equation.
  */
 class MaxwellSingleLayerOperator
     : public LinearOperatorBase<MaxwellSingleLayerOperator> {
@@ -183,4 +176,4 @@ struct H2Multipole::Moment2D<InterpolationPoints, MaxwellSingleLayerOperator> {
 };
 
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_MAXWELL_SINGLELAYEROPERATOR_HPP_
+#endif

@@ -1,15 +1,12 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_SRC_POTENTIAL_DISCRETEPOTENTIAL_HPP_
-#define BEMBEL_SRC_POTENTIAL_DISCRETEPOTENTIAL_HPP_
+#ifndef BEMBEL_POTENTIAL_DISCRETEPOTENTIAL_H_
+#define BEMBEL_POTENTIAL_DISCRETEPOTENTIAL_H_
 
 namespace Bembel {
 /**
@@ -24,7 +21,7 @@ class DiscretePotential {
   //    constructors
   //////////////////////////////////////////////////////////////////////////////
   DiscretePotential() {}
-  explicit DiscretePotential(const AnsatzSpace<LinOp> &ansatz_space) {
+  DiscretePotential(const AnsatzSpace<LinOp> &ansatz_space) {
     init_DiscretePotential(ansatz_space);
   }
   //////////////////////////////////////////////////////////////////////////////
@@ -42,6 +39,10 @@ class DiscretePotential {
   //////////////////////////////////////////////////////////////////////////////
   //    compute
   //////////////////////////////////////////////////////////////////////////////
+  static_assert(
+      getFunctionSpaceOutputDimension<LinearOperatorTraits<LinOp>::Form>() ==
+          PotentialTraits<Derived>::OutputSpaceDimension,
+      "Dimension mismatch in potential evaluation");
   Eigen::Matrix<typename PotentialReturnScalar<
                     typename LinearOperatorTraits<LinOp>::Scalar,
                     typename PotentialTraits<Derived>::Scalar>::Scalar,
@@ -56,7 +57,7 @@ class DiscretePotential {
 
     auto super_space = ansatz_space_.get_superspace();
 
-    const ElementTree &element_tree = super_space.get_mesh().get_element_tree();
+    auto element_tree = super_space.get_mesh().get_element_tree();
     auto number_of_elements = element_tree.get_number_of_elements();
 
     auto polynomial_degree = super_space.get_polynomial_degree();
@@ -129,4 +130,4 @@ class DiscretePotential {
 };  // namespace Bembel
 
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_POTENTIAL_DISCRETEPOTENTIAL_HPP_
+#endif

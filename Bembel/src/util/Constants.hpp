@@ -1,15 +1,12 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_SRC_UTIL_CONSTANTS_HPP_
-#define BEMBEL_SRC_UTIL_CONSTANTS_HPP_
+#ifndef BEMBEL_INCLUDE_CONSTANTS_H_
+#define BEMBEL_INCLUDE_CONSTANTS_H_
 
 namespace Bembel {
 namespace Constants {
@@ -34,7 +31,7 @@ constexpr size_t Bembel_alloc_size = 100;
 // the interpolation problem solved during the assembly of the projector needs
 // to filter some almost-zero coefficients that might be introduced during the
 // solution of the linear system
-constexpr double projector_tolerance = 1e-4;
+constexpr double projector_tolerance = 1e-10;
 ////////////////////////////////////////////////////////////////////////////////
 /// methods
 ////////////////////////////////////////////////////////////////////////////////
@@ -45,4 +42,4 @@ inline constexpr bool isAlmostZero(double in) {
 }  // namespace Constants
 }  // namespace Bembel
 
-#endif  // BEMBEL_SRC_UTIL_CONSTANTS_HPP_
+#endif

@@ -1,15 +1,12 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_SRC_ANSATZSPACE_FUNCTIONEVALUATOR_HPP_
-#define BEMBEL_SRC_ANSATZSPACE_FUNCTIONEVALUATOR_HPP_
+#ifndef BEMBEL_ANSATZSPACE_FUNCTIONEVALUATOR_H_
+#define BEMBEL_ANSATZSPACE_FUNCTIONEVALUATOR_H_
 
 namespace Bembel {
 /**
@@ -33,7 +30,7 @@ class FunctionEvaluator {
         other.polynomial_degree_plus_one_squared_;
     return *this;
   }
-  explicit FunctionEvaluator(const AnsatzSpace<Derived> &ansatz_space) {
+  FunctionEvaluator(const AnsatzSpace<Derived> &ansatz_space) {
     init_FunctionEvaluator(ansatz_space);
     return;
   }
@@ -92,11 +89,9 @@ class FunctionEvaluator {
     const int tp_idx =
         x_idx + elements_per_direction * y_idx + patch * elements_per_patch;
     const int et_idx = reordering_vector_[tp_idx];
-    const ElementTree &et =
-        ansatz_space_.get_superspace().get_mesh().get_element_tree();
-    auto it = et.cpbegin();
-    std::advance(it, et_idx);
-    const ElementTreeNode &element = *it;
+    const ElementTreeNode &element = *(
+        ansatz_space_.get_superspace().get_mesh().get_element_tree().cpbegin() +
+        et_idx);
 
     SurfacePoint sp;
     ansatz_space_.get_superspace().get_geometry()[patch].updateSurfacePoint(
@@ -157,4 +152,4 @@ class FunctionEvaluator {
 };
 
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_ANSATZSPACE_FUNCTIONEVALUATOR_HPP_
+#endif

@@ -1,7 +1,4 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2024 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
@@ -9,8 +6,8 @@
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
 //
-#ifndef BEMBEL_SRC_LAPLACE_DOUBLELAYEROPERATOR_HPP_
-#define BEMBEL_SRC_LAPLACE_DOUBLELAYEROPERATOR_HPP_
+#ifndef BEMBEL_LINEAROPERATOR_HELMHOLTZ_HELMHOLTZDOUBLELAYEROPERATOR_H_
+#define BEMBEL_LINEAROPERATOR_HELMHOLTZ_HELMHOLTZDOUBLELAYEROPERATOR_H_
 
 namespace Bembel {
 // forward declaration of class LaplaceDoubleLayerOperator in order to define
@@ -74,9 +71,8 @@ class LaplaceDoubleLayerOperator
 
     // multiply basis functions with integrand and add to intval, this is an
     // efficient implementation of
-    // (*intval) += super_space.BasisInteraction(s, t) * evaluateKernel(x_f,
-    // y_f)
-    // * x_kappa * y_kappa * ws * wt;
+    //(*intval) += super_space.BasisInteraction(s, t) * evaluateKernel(x_f, y_f)
+    //* x_kappa * y_kappa * ws * wt;
     super_space.addScaledBasisInteraction(intval, integrand, s, t);
 
     return;
@@ -121,4 +117,4 @@ class LaplaceDoubleLayerOperator
 };
 
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_LAPLACE_DOUBLELAYEROPERATOR_HPP_
+#endif

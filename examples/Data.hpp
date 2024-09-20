@@ -1,15 +1,12 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef EXAMPLES_DATA_HPP_
-#define EXAMPLES_DATA_HPP_
+#ifndef __BEMBEL_DATA_
+#define __BEMBEL_DATA_
 
 #include <Eigen/Dense>
 #include <cmath>
@@ -24,12 +21,31 @@ namespace Data {
 inline double HarmonicFunction(Eigen::Vector3d in) {
   return (4 * in(0) * in(0) - 3 * in(1) * in(1) - in(2) * in(2));
 }
-/*  @brief This function implements the gradient of a harmonic function,
+
+/*	@brief This function implements the gradient of a harmonic function,
  * which, in the interior dormain, satisfies the Laplace equation.
  *
  */
 inline Eigen::Vector3d HarmonicFunctionGrad(Eigen::Vector3d in) {
   return Eigen::Vector3d(8 * in(0), -6 * in(1), -2 * in(2));
+}
+
+/*	@brief This function implements the Laplace fundamental solution, which,
+ * in the interior dormain, satisfies the Laplace equation.
+ *
+ */
+inline double LaplaceFundamentalSolution(
+    Eigen::Vector3d in, Eigen::Vector3d center = Eigen::Vector3d(0., 0., 0.)) {
+  return 1. / (in - center).norm();
+}
+
+/*	@brief This function implements the gradient of a harmonic function,
+ * which, in the interior dormain, satisfies the Laplace equation.
+ *
+ */
+inline Eigen::Vector3d LaplaceFundamentalSolutionGrad(
+    Eigen::Vector3d in, Eigen::Vector3d center = Eigen::Vector3d(0., 0., 0.)) {
+  return (center - in) / std::pow((in - center).norm(), 3);
 }
 
 /*	@brief This function implements the Helmholtz fundamental solution,
@@ -91,4 +107,4 @@ inline Eigen::Vector3cd Dipole(Eigen::Vector3d pt, std::complex<double> kappa,
 
 }  // namespace Data
 }  // namespace Bembel
-#endif  // EXAMPLES_DATA_HPP_
+#endif

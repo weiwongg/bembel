@@ -1,61 +1,86 @@
+#Copy all .dat files to the example folder you build
+get_filename_component(PARENT_DIR ${CMAKE_CURRENT_SOURCE_DIR} PATH)
+file(GLOB GEOMETRY_HEADERS "${PARENT_DIR}/geo/*.dat")
+file(COPY ${GEOMETRY_HEADERS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
-# copy geometry files for testing
-configure_file(${CMAKE_SOURCE_DIR}/geo/sphere.dat ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/geo/torus.dat ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
-configure_file(${CMAKE_SOURCE_DIR}/geo/cube_small.dat ${CMAKE_CURRENT_BINARY_DIR}/ COPYONLY)
+add_executable(example_Spline.out example_Spline)
+target_link_libraries(example_Spline.out Eigen3::Eigen)
 
-###############################################################################
-# examples being run from CI
-###############################################################################
+add_executable(example_Geometry.out example_Geometry)
+target_link_libraries(example_Geometry.out Eigen3::Eigen)
 
-set(CIFILES
-    AnsatzSpace
-    BlockClusterTree
-    Geometry
-    MassMatrix
-    LaplaceBeltrami
-    LaplaceSingleLayerFull
-    LaplaceSingleLayerH2
-    LaplaceHypersingularH2
-    LaplaceDoubleLayerH2
-    LaplaceAdjointDoubleLayerH2
-    LazyEigenSum
-    HelmholtzSingleLayerFull
-    HelmholtzSingleLayerH2
-    HelmholtzDoubleLayerH2
-    HelmholtzAdjointDoubleLayerH2
-    HelmholtzHypersingularH2
-    HomogenisedLaplaceSingleLayerFull
-    HomogenisedLaplaceSingleLayerH2
-    MaxwellSingleLayerFull
-    MaxwellSingleLayerH2
-    )
+add_executable(example_AnsatzSpace.out example_AnsatzSpace)
+target_link_libraries(example_AnsatzSpace.out Eigen3::Eigen)
 
-foreach(file IN LISTS CIFILES)
-  add_executable(${file} ${file}.cpp)
-  target_link_libraries(${file} Eigen3::Eigen)
-  add_test(${file}Example ${file})
-  set_tests_properties(${file}Example PROPERTIES LABELS "E2Etests")
-endforeach()
+add_executable(example_Quadrature.out example_Quadrature)
+target_link_libraries(example_Quadrature.out Eigen3::Eigen)
 
-enable_testing()
+add_executable(example_BlockClusterTree.out example_BlockClusterTree)
+target_link_libraries(example_BlockClusterTree.out Eigen3::Eigen)
 
-add_custom_target(E2Etests)
-add_dependencies(E2Etests ${CIFILES})
+add_executable(example_LaplaceHypersingularFull.out example_LaplaceHypersingularFull)
+target_link_libraries(example_LaplaceHypersingularFull.out Eigen3::Eigen)
 
-###############################################################################
-# examples not being run from CI
-###############################################################################
+add_executable(example_LaplaceHypersingularH2Matrix.out example_LaplaceHypersingularH2Matrix)
+target_link_libraries(example_LaplaceHypersingularH2Matrix.out Eigen3::Eigen)
 
-set(NOCIFILES
-    Quadrature
-    VTKSurfaceExport
-    VTKDomainExport
-    FullLaplaceWorkflow
-    FullMaxwellWorkflow
-    )
+add_executable(example_LaplaceSingleLayerFull.out example_LaplaceSingleLayerFull)
+target_link_libraries(example_LaplaceSingleLayerFull.out Eigen3::Eigen)
 
-  foreach(file IN LISTS NOCIFILES)
-  add_executable(${file} ${file}.cpp)
-  target_link_libraries(${file} Eigen3::Eigen)
-endforeach()
+add_executable(example_LaplaceSingleLayerH2Matrix.out example_LaplaceSingleLayerH2Matrix)
+target_link_libraries(example_LaplaceSingleLayerH2Matrix.out Eigen3::Eigen)
+
+add_executable(example_LaplaceDoubleLayerH2Matrix.out example_LaplaceDoubleLayerH2Matrix)
+target_link_libraries(example_LaplaceDoubleLayerH2Matrix.out Eigen3::Eigen)
+
+add_executable(example_HelmholtzSingleLayerFull.out example_HelmholtzSingleLayerFull)
+target_link_libraries(example_HelmholtzSingleLayerFull.out Eigen3::Eigen)
+
+add_executable(example_HelmholtzSingleLayerH2Matrix.out example_HelmholtzSingleLayerH2Matrix)
+target_link_libraries(example_HelmholtzSingleLayerH2Matrix.out Eigen3::Eigen)
+
+add_executable(example_HelmholtzDoubleLayerH2Matrix.out example_HelmholtzDoubleLayerH2Matrix)
+target_link_libraries(example_HelmholtzDoubleLayerH2Matrix.out Eigen3::Eigen)
+
+add_executable(example_HelmholtzAdjointDoubleLayerH2Matrix.out example_HelmholtzAdjointDoubleLayerH2Matrix)
+target_link_libraries(example_HelmholtzAdjointDoubleLayerH2Matrix.out Eigen3::Eigen)
+
+add_executable(example_HelmholtzHypersingularFull.out example_HelmholtzHypersingularFull)
+target_link_libraries(example_HelmholtzHypersingularFull.out Eigen3::Eigen)
+
+add_executable(example_HelmholtzHypersingularH2Matrix.out example_HelmholtzHypersingularH2Matrix)
+target_link_libraries(example_HelmholtzHypersingularH2Matrix.out Eigen3::Eigen)
+
+add_executable(example_HelmholtzBrakhageWernerH2Matrix.out example_HelmholtzBrakhageWernerH2Matrix)
+target_link_libraries(example_HelmholtzBrakhageWernerH2Matrix.out Eigen3::Eigen)
+
+add_executable(example_HelmholtzBurtonMillerH2Matrix.out example_HelmholtzBurtonMillerH2Matrix)
+target_link_libraries(example_HelmholtzBurtonMillerH2Matrix.out Eigen3::Eigen)
+
+add_executable(example_MassMatrix.out example_MassMatrix)
+target_link_libraries(example_MassMatrix.out Eigen3::Eigen)
+
+add_executable(example_MaxwellSingleLayerFull.out example_MaxwellSingleLayerFull)
+target_link_libraries(example_MaxwellSingleLayerFull.out Eigen3::Eigen)
+
+add_executable(example_MaxwellSingleLayerH2Matrix.out example_MaxwellSingleLayerH2Matrix)
+target_link_libraries(example_MaxwellSingleLayerH2Matrix.out Eigen3::Eigen)
+
+add_executable(example_VTKSurfaceExport.out example_VTKSurfaceExport)
+target_link_libraries(example_VTKSurfaceExport.out Eigen3::Eigen)
+
+add_executable(example_VTKDomainExport.out example_VTKDomainExport)
+target_link_libraries(example_VTKDomainExport.out Eigen3::Eigen)
+
+add_executable(example_FullLaplaceWorkflow.out example_FullLaplaceWorkflow)
+target_link_libraries(example_FullLaplaceWorkflow.out Eigen3::Eigen)
+
+add_executable(example_DiscreteFunction.out example_DiscreteFunction)
+target_link_libraries(example_DiscreteFunction.out Eigen3::Eigen)
+
+add_executable(example_LaplaceBeltrami.out example_LaplaceBeltrami)
+target_link_libraries(example_LaplaceBeltrami.out Eigen3::Eigen)
+
+add_executable(example_LaplaceBeltramiMultiGrid.out example_LaplaceBeltramiMultiGrid)
+target_link_libraries(example_LaplaceBeltramiMultiGrid.out Eigen3::Eigen)
+

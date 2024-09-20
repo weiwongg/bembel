@@ -1,15 +1,12 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_SRC_LINEARFORM_DISCRETELINEARFORM_HPP_
-#define BEMBEL_SRC_LINEARFORM_DISCRETELINEARFORM_HPP_
+#ifndef BEMBEL_LINEARFORM_DISCRETELINEARFORM_H_
+#define BEMBEL_LINEARFORM_DISCRETELINEARFORM_H_
 
 namespace Bembel {
 /**
@@ -24,7 +21,7 @@ class DiscreteLinearForm {
   //    constructors
   //////////////////////////////////////////////////////////////////////////////
   DiscreteLinearForm() {}
-  explicit DiscreteLinearForm(const AnsatzSpace<LinOp> &ansatz_space) {
+  DiscreteLinearForm(const AnsatzSpace<LinOp> &ansatz_space) {
     init_DiscreteLinearForm(ansatz_space);
   }
   //////////////////////////////////////////////////////////////////////////////
@@ -46,7 +43,7 @@ class DiscreteLinearForm {
     auto Q = GS[deg_];
     SurfacePoint qp;
     auto super_space = ansatz_space_.get_superspace();
-    const ElementTree &element_tree = super_space.get_mesh().get_element_tree();
+    auto element_tree = super_space.get_mesh().get_element_tree();
     auto number_of_elements = element_tree.get_number_of_elements();
     auto polynomial_degree = super_space.get_polynomial_degree();
     auto polynomial_degree_plus_one_squared =
@@ -106,4 +103,4 @@ class DiscreteLinearForm {
 };
 
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_LINEARFORM_DISCRETELINEARFORM_HPP_
+#endif

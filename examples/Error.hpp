@@ -1,15 +1,12 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
-// M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
+// M. Multerer, S. Schoeps, and F. Wolf at Technische Universtaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef EXAMPLES_ERROR_HPP_
-#define EXAMPLES_ERROR_HPP_
+#ifndef __BEMBEL_UTIL_ERROR__
+#define __BEMBEL_UTIL_ERROR__
 
 /**
  * @brief Routines for the evalutation of pointwise errors.
@@ -99,25 +96,6 @@ inline double maxPointwiseError(
   return error;
 }
 
-double estimateRateOfConvergence(const Eigen::VectorXd &errors) {
-  Eigen::MatrixXd A(errors.rows(), 2);
-  A << Eigen::VectorXd::Ones(errors.rows()),
-      Eigen::VectorXd::LinSpaced(errors.rows(), 0, errors.rows() - 1);
-  Eigen::VectorXd b = errors.array().abs().log() / std::log(2);
-  Eigen::VectorXd x = A.colPivHouseholderQr().solve(b);
-  return -x(1);
-}
-
-bool checkRateOfConvergence(const Eigen::VectorXd &errors,
-                            const int expected_rate, const double tol_factor,
-                            double *rate_of_convergence_out = NULL) {
-  double rate_of_convergence = estimateRateOfConvergence(errors);
-  if (rate_of_convergence_out) rate_of_convergence_out[0] = rate_of_convergence;
-  std::cout << "Estimated rate of convergence:" << rate_of_convergence
-            << std::endl;
-  return (rate_of_convergence > tol_factor * expected_rate);
-}
-
 }  // namespace Bembel
 
-#endif  // EXAMPLES_ERROR_HPP_
+#endif

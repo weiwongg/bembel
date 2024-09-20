@@ -1,0 +1,34 @@
+// This file is part of Bembel, the higher order C++ boundary element library.
+// It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
+// M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
+// Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
+// source code is subject to the GNU General Public License version 3 and
+// provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
+// information.
+
+#ifndef BEMBEL_DISCRETEFUNCTION_MODULE_
+#define BEMBEL_DISCRETEFUNCTION_MODULE_
+
+#include <memory>
+#include <algorithm>
+#include <cmath>
+
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+
+#include "AnsatzSpace"
+#include "Geometry"
+#include "ClusterTree"
+#include "Spline"
+#include "LocalOperator"
+#include "LinearForm"
+#include "IO"
+
+#include "src/util/Macros.hpp"
+#include "src/LinearOperator/LinearOperatorTraits.hpp"
+
+#include "src/DiscreteFunction/DiscreteFunctionEval.hpp"
+#include "src/DiscreteFunction/DiscreteFunctionInit.hpp"
+#include "src/DiscreteFunction/DiscreteFunction.hpp"
+
+#endif

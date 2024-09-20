@@ -1,15 +1,13 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
-// M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
+// M. Multerer, S. Schoeps, and F. Wolf at Technische Universtaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_SRC_IO_LOGGER_HPP_
-#define BEMBEL_SRC_IO_LOGGER_HPP_
+#ifndef _C_BEMBEL_LOGGER_
+#define _C_BEMBEL_LOGGER_
+
 
 namespace Bembel {
 namespace IO {
@@ -34,7 +32,7 @@ class Logger {
 
  public:
   Logger() {}
-  explicit Logger(std::string name) { name_ = name; }
+  Logger(std::string name) { name_ = name; }
   Logger(std::string name, std::string sep) {
     name_ = name;
     _sep = sep;
@@ -48,7 +46,7 @@ class Logger {
     name_ = name;
     _mode = mode;
   }
-  explicit Logger(std::ios_base::openmode mode) { _mode = mode; }
+  Logger(std::ios_base::openmode mode) { _mode = mode; }
   template <typename T, typename... Args>
   void term(T t, Args... arg) {
     std::cout << std::setprecision(N - 4) << std::setw(N + _sep.size())
@@ -85,6 +83,6 @@ class Logger {
   }
   ~Logger() { _file.close(); }
 };
-}  // namespace IO
+}  // namespace Util
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_IO_LOGGER_HPP_
+#endif
