@@ -21,15 +21,16 @@ namespace Spl {
 // Unrolls a matrix into a vector. Y-Dir first.
 template <typename T>
 inline Eigen::Matrix<T, -1, 1> Unroll(
-    const Eigen::Matrix<T, -1, -1> &input_matrix) noexcept {
+    const Eigen::Matrix<T, -1, -1>& input_matrix) noexcept {
   const int nx = input_matrix.cols();
   const int ny = input_matrix.rows();
-  // std::cout << "unroll\n";
-  Eigen::Matrix<T, -1, 1> out(nx * ny, 1);
-  for (int i = 0; i < nx; i++) {
-    for (int j = 0; j < ny; j++) out(i * ny + j) = input_matrix(j, i);
-  }
-  return out;
+  // Eigen::Matrix<T, -1, 1> out(nx * ny, 1);
+  // for (int i = 0; i < nx; i++) {
+  //   for (int j = 0; j < ny; j++) out(i * ny + j) = input_matrix(j, i);
+  // }
+  // return out;
+  return Eigen::Map<Eigen::Matrix<T, Eigen::Dynamic, 1>>(
+      (double*)input_matrix.data(), nx * ny);
 }
 }  // namespace Spl
 }  // namespace Bembel

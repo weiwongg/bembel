@@ -25,9 +25,10 @@ class IdentityOperatorBase : public LocalOperatorBase<Derived> {
  public:
   IdentityOperatorBase() {}
   template <class T>
-  void evaluateIntegrand_impl(const T &super_space, const SurfacePoint &p1,
-                              const SurfacePoint &p2,
-                              Eigen::MatrixXd *intval) const {
+  void evaluateIntegrand_impl(
+      const T &super_space, const SurfacePoint &p1, const SurfacePoint &p2,
+      Eigen::Matrix<typename LinearOperatorTraits<Derived>::Scalar,
+                    Eigen::Dynamic, Eigen::Dynamic> *intval) const {
     // get evaluation points on unit square
     const auto s = p1.segment<2>(0);
 

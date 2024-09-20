@@ -27,6 +27,6 @@
 #include "src/LinearForm/NeumannTrace.hpp"
 #include "src/LinearForm/DiscreteLinearForm.hpp"
 #include "src/LinearForm/RotatedTangentialTrace.hpp"
-#include "src/LinearForm/TangentialTrace.hpp"
+#include "src/LinearForm/HelmholtzColtonKressRhs.hpp"
 
 #endif  // BEMBEL_LINEARFORM_MODULE_

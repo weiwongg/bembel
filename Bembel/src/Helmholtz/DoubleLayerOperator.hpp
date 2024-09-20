@@ -1,7 +1,4 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2024 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
@@ -9,8 +6,8 @@
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
 //
-#ifndef BEMBEL_SRC_HELMHOLTZ_DOUBLELAYEROPERATOR_HPP_
-#define BEMBEL_SRC_HELMHOLTZ_DOUBLELAYEROPERATOR_HPP_
+#ifndef BEMBEL_LINEAROPERATOR_HELMHOLTZ_HELMHOLTZDOUBLELAYEROPERATOR_H_
+#define BEMBEL_LINEAROPERATOR_HELMHOLTZ_HELMHOLTZDOUBLELAYEROPERATOR_H_
 
 namespace Bembel {
 // forward declaration of class HelmholtzDoubleLayerOperator in order to define
@@ -68,13 +65,13 @@ class HelmholtzDoubleLayerOperator
     auto y_n = y_f_dx.cross(y_f_dy);
 
     // integrand without basis functions
+    // dot: adjoint in first variable
     auto integrand = evaluateKernelGrad(x_f, y_f, y_n) * x_kappa * ws * wt;
 
     // multiply basis functions with integrand and add to intval, this is an
     // efficient implementation of
-    // (*intval) += super_space.BasisInteraction(s, t) * evaluateKernel(x_f,
-    // y_f)
-    // * x_kappa * y_kappa * ws * wt;
+    //(*intval) += super_space.BasisInteraction(s, t) * evaluateKernel(x_f, y_f)
+    //* x_kappa * y_kappa * ws * wt;
     super_space.addScaledBasisInteraction(intval, integrand, s, t);
 
     return;
@@ -101,6 +98,7 @@ class HelmholtzDoubleLayerOperator
 
     // interpolation
     Eigen::Matrix<std::complex<double>, 1, 1> intval;
+    // dot: adjoint in first variable
     intval(0) = evaluateKernelGrad(x_f, y_f, y_n) * x_kappa;
 
     return intval;
@@ -135,4 +133,4 @@ class HelmholtzDoubleLayerOperator
 };
 
 }  // namespace Bembel
-#endif  // BEMBEL_SRC_HELMHOLTZ_DOUBLELAYEROPERATOR_HPP_
+#endif

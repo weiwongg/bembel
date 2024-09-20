@@ -1,7 +1,4 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
-//
-// Copyright (C) 2022 see <http://www.bembel.eu>
-//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
@@ -38,6 +35,8 @@
  * Patch class introduces work that needs to be done twice. The
  * updateSurdacePoint method is specialized and should be used, since it avoids
  * redundant work.
+ * (12) the ID of the element from which the mapping is performed. This is
+ *      necessary for having functions defined in the parameter domain
  **/
 typedef Eigen::Matrix<double, 12, 1> SurfacePoint;
 

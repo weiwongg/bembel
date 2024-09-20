@@ -53,6 +53,9 @@
 #include "src/AnsatzSpace/AnsatzSpace.hpp"
 #include "src/AnsatzSpace/FunctionEvaluatorEval.hpp"
 
+#include "src/AnsatzSpace/FunctionEvaluatorBase.hpp"
+
 #include "src/AnsatzSpace/FunctionEvaluator.hpp"
+#include "src/AnsatzSpace/DeformationField.hpp"
 
 #endif  // BEMBEL_ANSATZSPACE_MODULE_

@@ -17,5 +17,7 @@
 #include "src/Identity/IdentityOperatorBase.hpp"
 #include "src/Identity/MassMatrixScalarDisc.hpp"
 #include "src/Identity/MassMatrixScalarCont.hpp"
+#include "src/Identity/MassMatrixComplexCont.hpp"
+#include "src/Identity/MassMatrixComplexDisc.hpp"
 
 #endif  // BEMBEL_IDENTITY_MODULE_

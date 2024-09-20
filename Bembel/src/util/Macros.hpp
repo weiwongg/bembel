@@ -17,6 +17,8 @@
 #define BEMBEL_PI M_PI
 #endif
 
+#define BEMBEL_SURFACE_INTERPOLATION_DEGREE_ 6
+
 #define BEMBEL_UNUSED_(x) (void)(x)
 
 #define BEMBEL_SIGNUM_(x) ((x >= 0) ? 1 : -1)

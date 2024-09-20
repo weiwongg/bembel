@@ -21,7 +21,7 @@ struct Bembel::LinearOperatorTraits<FakeDivergenceConformingOperator> {
 
 int main() {
   using namespace Bembel;
-  Geometry geo("sphere.dat");
+  Geometry geo("../geo/centered_cube.dat");
 
   // The refinement level for the visualization is independent of that of the
   // simulation since one might consider to visualize a coarse discretisation on

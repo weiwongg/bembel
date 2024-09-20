@@ -47,6 +47,24 @@ inline Eigen::Matrix<double, Eigen::Dynamic, 3> makeSphereGrid(
   }
   return out;
 }
+
+inline Eigen::Matrix<double, Eigen::Dynamic, 3> makePlaneGrid(
+    const double r0, const double r1, const int n0, const int n1,
+    const Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0)) {
+  Eigen::Matrix<double, Eigen::Dynamic, 3> out(n0 * n1, 3);
+  const double h0 = (r1 - r0) / n0;
+  const double h1 = 2 * 3.1415926 / n1;
+  for (int i = 0; i < n0; i++) {
+    for (int j = 0; j < n1; j++) {
+      double r = r0 + h0 * i;
+      out.row(j + i * n1) =
+          (Eigen::Vector3d(r * cos(h1 * j), r * sin(h1 * j), 0) + center);
+    }
+  }
+
+  return out;
+}
+
 }  // namespace Util
 }  // namespace Bembel
 #endif  // EXAMPLES_GRIDS_HPP_

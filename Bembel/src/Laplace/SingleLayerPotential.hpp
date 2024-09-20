@@ -16,9 +16,7 @@ namespace Bembel {
 // traits
 template <typename LinOp>
 class LaplaceSingleLayerPotential;
-/**
- * \brief Specification of the PotentialTraits for Laplace.
- */
+
 template <typename LinOp>
 struct PotentialTraits<LaplaceSingleLayerPotential<LinOp>> {
   typedef Eigen::VectorXd::Scalar Scalar;
@@ -27,8 +25,6 @@ struct PotentialTraits<LaplaceSingleLayerPotential<LinOp>> {
 
 /**
  * \ingroup Laplace
- * \brief This class implements the specification of the integration for the
- * single layer potential for Laplace.
  */
 template <typename LinOp>
 class LaplaceSingleLayerPotential
