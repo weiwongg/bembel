@@ -1,12 +1,15 @@
 // This file is part of Bembel, the higher order C++ boundary element library.
+//
+// Copyright (C) 2022 see <http://www.bembel.eu>
+//
 // It was written as part of a cooperation of J. Doelz, H. Harbrecht, S. Kurz,
 // M. Multerer, S. Schoeps, and F. Wolf at Technische Universitaet Darmstadt,
 // Universitaet Basel, and Universita della Svizzera italiana, Lugano. This
 // source code is subject to the GNU General Public License version 3 and
 // provided WITHOUT ANY WARRANTY, see <http://www.bembel.eu> for further
 // information.
-#ifndef BEMBEL_GEOMETRY_POLYNOMIALPATCH_HPP_
-#define BEMBEL_GEOMETRY_POLYNOMIALPATCH_HPP_
+#ifndef BEMBEL_SRC_GEOMETRY_POLYNOMIALPATCH_HPP_
+#define BEMBEL_SRC_GEOMETRY_POLYNOMIALPATCH_HPP_
 
 #include <Eigen/Dense>
 #include <memory>
@@ -14,13 +17,10 @@
 namespace Bembel {
 
 /**
- *
- *  this class takes nx * ny points in space, which correspond to the values
- *  of an nx x ny cartesian grid on [0,1]^2 and piecewise interpolates them by
- *  tensor product polynomials of degree px x py.
- *  Interpolation is done by a 2D divided difference scheme, while evaluation
- *  of the polynomials and their derivatives is performed by Horner's method.
- **/
+ * \ingroup Geometry
+ * \class PolynomialPatch
+ * \brief handles a single polynomial patch
+ */
 class PolynomialPatch {
  public:
   PolynomialPatch() {};
@@ -84,7 +84,7 @@ class PolynomialPatch {
                   (xvec_(i + m) - xvec_(i + m - l));
       }
     return;
-  };
+  }
   //////////////////////////////////////////////////////////////////////////////
   Eigen::Vector3d eval(const Eigen::Vector2d &reference_point) const {
     // compute the right window by index shift in [0, nx] x [0, ny]
@@ -103,7 +103,7 @@ class PolynomialPatch {
     // then interpolate the result in y-direction
     return HornersMethod(eval_buffer.block(0, 0, 3, py_ + 1),
                          yvec_.segment(ind_y, py_ + 1), y);
-  };
+  }
   //////////////////////////////////////////////////////////////////////////////
   Eigen::Matrix<double, 3, 2> evalJacobian(
       const Eigen::Vector2d &reference_point) const {
@@ -132,13 +132,13 @@ class PolynomialPatch {
                         .col(1) *
                     (ny_ - 1);
     return retval;
-  };
+  }
   //////////////////////////////////////////////////////////////////////////////
   Eigen::Matrix<double, 3, 1> evalNormal(
       const Eigen::Vector2d &reference_point) const {
     auto J = evalJacobian(reference_point);
     return J.col(0).cross(J.col(1));
-  };
+  }
   //////////////////////////////////////////////////////////////////////////////
   Eigen::Vector3d eval(double x, double y) const {
     return eval(Eigen::Vector2d(x, y));
@@ -199,7 +199,7 @@ class PolynomialPatch {
             .col(1) *
         (ny_ - 1);
     return;
-  };
+  }
   //////////////////////////////////////////////////////////////////////////////
  private:
   //////////////////////////////////////////////////////////////////////////////
@@ -242,4 +242,4 @@ class PolynomialPatch {
 }
 }  // namespace Bembel
 
-#endif  // BEMBEL_GEOMETRY_POLYNOMIALPATCH_HPP_
+#endif  // BEMBEL_SRC_GEOMETRY_POLYNOMIALPATCH_HPP_
