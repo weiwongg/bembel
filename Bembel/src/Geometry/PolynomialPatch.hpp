@@ -11,9 +11,6 @@
 #ifndef BEMBEL_SRC_GEOMETRY_POLYNOMIALPATCH_HPP_
 #define BEMBEL_SRC_GEOMETRY_POLYNOMIALPATCH_HPP_
 
-#include <Eigen/Dense>
-#include <memory>
-
 namespace Bembel {
 
 /**
@@ -23,7 +20,7 @@ namespace Bembel {
  */
 class PolynomialPatch {
  public:
-  PolynomialPatch() {};
+  PolynomialPatch() {}
   PolynomialPatch(const Eigen::MatrixXd &interpolation_points, int nx, int px,
                   int ny = -1, int py = -1, double scale = 1.) {
     init_PolynomialPatch(interpolation_points, nx, px, ny, py, scale);
