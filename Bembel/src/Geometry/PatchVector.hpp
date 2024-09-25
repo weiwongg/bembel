@@ -21,6 +21,7 @@ namespace Bembel {
  *format, and the new format must provide an eval(), evalNorma(), evalJacobian()
  *and updateSurfacePoint() method.
  **/
+class PolynomialPatch;
 typedef std::vector<Bembel::Patch> PatchVector;
 
 }  // namespace Bembel

@@ -40,11 +40,15 @@
 #include "Spline"
 
 #include "src/Geometry/SurfacePoint.hpp"
+#include "src/util/GenericMatrix.hpp"
 
 #include "src/Geometry/Patch.hpp"
+#include "src/Geometry/PolynomialPatch.hpp"
 #include "src/Geometry/PatchVector.hpp"
 #include "src/Geometry/GeometryIO.hpp"
 #include "src/Geometry/GeometryIGS.hpp"
+#include "src/Geometry/GeometryPoly.hpp"
 #include "src/Geometry/Geometry.hpp"
+
 
 #endif  // BEMBEL_GEOMETRY_MODULE_
