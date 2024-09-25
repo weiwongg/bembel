@@ -236,7 +236,7 @@ class PolynomialPatch {
   int py_;
   int nwin_x_;
   int nwin_y_;
-}
+};
 }  // namespace Bembel
 
 #endif  // BEMBEL_SRC_GEOMETRY_POLYNOMIALPATCH_HPP_
